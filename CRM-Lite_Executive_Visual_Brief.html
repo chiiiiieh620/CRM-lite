@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRM Lite 專案企劃書｜商業分析與資料結構</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5d6d7e;
+      --line: #d9e0e8;
+      --bg: #f4f6f9;
+      --panel: #ffffff;
+      --blue: #2f6fed;
+      --green: #1f8f5f;
+      --amber: #bd7b16;
+      --red: #c2413a;
+      --purple: #6757d8;
+      --cyan: #0e9aa7;
+      --slate: #34495e;
+      --soft-blue: #edf4ff;
+      --soft-green: #edf8f2;
+      --soft-amber: #fff5e6;
+      --soft-red: #fff0ef;
+      --soft-purple: #f2efff;
+      --soft-cyan: #ebf8fa;
+      --soft-slate: #f1f4f7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 24px 18px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .topbar a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 12px;
+    }
+
+    .page {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin: 0 0 10px; font-size: 32px; }
+    h2 { margin: 0 0 14px; font-size: 22px; }
+    h3 { margin: 0 0 9px; font-size: 16px; }
+    p { margin: 0 0 10px; }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 980px;
+    }
+
+    .page-title {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .pill {
+      display: inline-block;
+      color: #fff;
+      background: var(--slate);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .pill.blue { background: var(--blue); }
+    .pill.green { background: var(--green); }
+    .pill.amber { background: var(--amber); }
+    .pill.red { background: var(--red); }
+    .pill.purple { background: var(--purple); }
+    .pill.cyan { background: var(--cyan); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 15px;
+      background: #fff;
+    }
+
+    .card.blue { border-left: 5px solid var(--blue); }
+    .card.green { border-left: 5px solid var(--green); }
+    .card.amber { border-left: 5px solid var(--amber); }
+    .card.red { border-left: 5px solid var(--red); }
+    .card.purple { border-left: 5px solid var(--purple); }
+    .card.cyan { border-left: 5px solid var(--cyan); }
+    .card.slate { border-left: 5px solid var(--slate); }
+
+    ul, ol { margin: 8px 0 0; padding-left: 20px; }
+    li { margin: 5px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef3f8;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-top: 22px;
+    }
+
+    .decision {
+      background: #f8fbff;
+      border: 1px solid #cbdaf5;
+      border-radius: 8px;
+      padding: 13px 15px;
+      margin-top: 12px;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 7px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fff;
+      border: 1px solid #e1e7ef;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .svg-title { font-size: 20px; font-weight: 700; fill: #17202a; }
+    .svg-subtitle { font-size: 13px; fill: #5d6d7e; }
+    .svg-label { font-size: 14px; font-weight: 700; fill: #17202a; }
+    .svg-small { font-size: 12px; fill: #34495e; }
+    .svg-tiny { font-size: 11px; fill: #5d6d7e; }
+
+    .box {
+      fill: #fff;
+      stroke: #cfd7e2;
+      stroke-width: 1.4;
+      rx: 8;
+    }
+
+    .box-blue { fill: var(--soft-blue); stroke: #7aa2f7; }
+    .box-green { fill: var(--soft-green); stroke: #72c79a; }
+    .box-amber { fill: var(--soft-amber); stroke: #e2a94b; }
+    .box-red { fill: var(--soft-red); stroke: #db7b75; }
+    .box-purple { fill: var(--soft-purple); stroke: #a69af6; }
+    .box-cyan { fill: var(--soft-cyan); stroke: #64c3cb; }
+    .box-slate { fill: var(--soft-slate); stroke: #9aa8b8; }
+
+    .two-page-note {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 920px) {
+      main { padding: 14px 10px 32px; }
+      .page { padding: 18px; }
+      h1 { font-size: 26px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .topbar { display: block; }
+      .topbar nav { margin-top: 8px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      main { max-width: none; padding: 0; }
+      .topbar, .two-page-note { display: none; }
+      .page {
+        border: 0;
+        border-radius: 0;
+        margin: 0;
+        padding: 18mm 14mm;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="topbar">
+      <div>CRM Lite 專案企劃書｜兩頁版</div>
+      <nav>
+        <a href="#business">商業分析頁</a>
+        <a href="#data">資料結構頁</a>
+      </nav>
+    </div>
+
+    <div class="two-page-note">
+      本文件分為兩頁：第一頁供主管理解商業需求、系統選型與導入策略；第二頁供 MIS 與業務主管釐清 MVP 資料結構、資料來源與建置流程。
+    </div>
+
+    <section class="page" id="business">
+      <div class="page-title">
+        <h1>第一頁｜CRM Lite 商業分析與導入策略</h1>
+        <p class="subtitle">本頁說明 CRM Lite 專案為何需要推動、目前痛點、系統盤點、平台選型、解決方案與階段策略。重點是讓主管理解：此專案不是單純做 Power Apps，而是建立業務管理資料流，並先用 MVP 驗證可行性與組織接受度。</p>
+        <div class="pill-row">
+          <span class="pill blue">Business Analysis</span>
+          <span class="pill green">MIS View</span>
+          <span class="pill cyan">CRM Lite MVP</span>
+          <span class="pill purple">Power Platform</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>1. 目前需求與痛點</h2>
+        <div class="grid-2">
+          <div class="card red">
+            <h3>現況痛點</h3>
+            <ul>
+              <li>業務活動、商機、週報、晨會、跨部門追蹤分散在鼎新 CRM、Word、Excel、XMS、LINE、Google Calendar。</li>
+              <li>週報仍依賴手工整理，資料重複輸入，Sales Activity 分析逐漸荒廢。</li>
+              <li>鼎新 CRM 有資料但手機介面、週報整合、ERP 串接與現場使用率不足。</li>
+              <li>主管不易即時看到重大商機、停滯案件、逾期事項與待決策議題。</li>
+            </ul>
+          </div>
+          <div class="card green">
+            <h3>真正需求</h3>
+            <ul>
+              <li>建立客戶、Key Man、商機與業務活動的共同資料來源。</li>
+              <li>讓 Sales Activity / Call Report 成為業務主要輸入入口。</li>
+              <li>週報案件明細由系統產生，業務只補主管摘要與判斷。</li>
+              <li>跨部門協調事項可追蹤責任人、期限、狀態與升級。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="decision">
+          <strong>商業判斷：</strong>CRM Lite 第一階段要先解決「資料流」與「週報負擔」，不是先追求完整 CRM、AI 分析或大型 BI。
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>2. MIS 系統盤點與處置</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>系統</th>
+              <th>目前負責</th>
+              <th>問題</th>
+              <th>MVP 處置</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>鼎新 CRM</td><td>客戶、商機、Sales Activity</td><td>手機介面與週報支援不足</td><td>保留歷史；匯出客戶與進行中商機；新活動逐步轉入 CRM Lite</td></tr>
+            <tr><td>Google Calendar</td><td>業務預定行程</td><td>只有行程，沒有活動結果</td><td>保留為行程主工具；CRM Lite 記錄實際活動結果</td></tr>
+            <tr><td>Word / Excel / VBA</td><td>週報整理</td><td>重複輸入、人工維護</td><td>週報明細改由 CRM Lite 視圖產生</td></tr>
+            <tr><td>XMS</td><td>安裝協調、跨部門、異常</td><td>任務與異常混雜</td><td>異常交 COM；跨部門需求視範圍移入 CRM Lite</td></tr>
+            <tr><td>LINE Concall</td><td>晨會溝通</td><td>不可搜尋、不可追蹤</td><td>保留通話，正式決議進 Meeting Actions</td></tr>
+            <tr><td>Planner</td><td>客服預約、內部公告</td><td>非業務既有主流程</td><td>不納入 MVP</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>3. Technology Selection：平台選型</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>平台</th>
+              <th>適合範圍</th>
+              <th>優點</th>
+              <th>限制</th>
+              <th>建議</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SharePoint Lists + Power Apps Canvas</td>
+              <td>表單、清單、輕量流程</td>
+              <td>成本低、導入快、手機可用</td>
+              <td>複雜關聯、大量資料、複雜權限有限</td>
+              <td>MVP 首選</td>
+            </tr>
+            <tr>
+              <td>Power Automate</td>
+              <td>提醒、狀態更新、週報候選資料</td>
+              <td>快速串接 M365</td>
+              <td>流程過多會難維護</td>
+              <td>只做必要自動化</td>
+            </tr>
+            <tr>
+              <td>Dataverse</td>
+              <td>複雜關聯、權限、稽核</td>
+              <td>企業級資料平台</td>
+              <td>授權與治理成本較高</td>
+              <td>MVP 後評估</td>
+            </tr>
+            <tr>
+              <td>Dynamics 365 Sales</td>
+              <td>完整 CRM、Pipeline、Forecast</td>
+              <td>標準 CRM 能力完整</td>
+              <td>導入成本與流程成熟度要求高</td>
+              <td>第三階段評估</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="decision">
+          <strong>選型結論：</strong>MVP 採 Lists + Power Apps + Power Automate，是為了快速驗證流程與資料主幹；不是因為它足以承擔企業級 CRM 的全部長期需求。
+        </div>
+        <div class="decision">
+          <strong>Power Apps 能力上限：</strong>Power Apps 適合快速建置表單、手機輸入、清單檢視與輕量流程；不適合長期承擔複雜 CRM 權限、完整商機預測、深度 ERP 報價整合、離線大量資料、複雜 BI 模型與跨系統主資料治理。若 MVP 驗證成立，後續應評估 Dataverse 或 Dynamics 365 Sales，而不是無限制擴充 SharePoint Lists。
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>4. 解決方案與流程架構</h2>
+        <svg viewBox="0 0 1120 460" role="img" aria-label="CRM Lite business flow">
+          <defs>
+            <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#667788"></path>
+            </marker>
+          </defs>
+          <text x="34" y="42" class="svg-title">CRM Lite MVP 流程主軸</text>
+          <text x="34" y="66" class="svg-subtitle">業務只填一次活動結果，系統產生商機更新、週報明細與追蹤事項。</text>
+
+          <rect x="52" y="126" width="180" height="70" class="box box-green"></rect>
+          <text x="142" y="158" text-anchor="middle" class="svg-label">Google Calendar</text>
+          <text x="142" y="180" text-anchor="middle" class="svg-small">預定行程</text>
+
+          <rect x="300" y="126" width="190" height="70" class="box box-blue"></rect>
+          <text x="395" y="158" text-anchor="middle" class="svg-label">Sales Activity</text>
+          <text x="395" y="180" text-anchor="middle" class="svg-small">實際活動結果</text>
+
+          <rect x="558" y="126" width="190" height="70" class="box box-purple"></rect>
+          <text x="653" y="158" text-anchor="middle" class="svg-label">Opportunity</text>
+          <text x="653" y="180" text-anchor="middle" class="svg-small">階段 / 下一步</text>
+
+          <rect x="816" y="126" width="220" height="70" class="box box-amber"></rect>
+          <text x="926" y="158" text-anchor="middle" class="svg-label">Weekly View</text>
+          <text x="926" y="180" text-anchor="middle" class="svg-small">週報案件明細</text>
+
+          <rect x="300" y="290" width="190" height="70" class="box box-cyan"></rect>
+          <text x="395" y="322" text-anchor="middle" class="svg-label">Coordination</text>
+          <text x="395" y="344" text-anchor="middle" class="svg-small">跨部門事項</text>
+
+          <rect x="558" y="290" width="190" height="70" class="box box-red"></rect>
+          <text x="653" y="322" text-anchor="middle" class="svg-label">Management</text>
+          <text x="653" y="344" text-anchor="middle" class="svg-small">主管決策 / 升級</text>
+
+          <path d="M232 161 L300 161" stroke="#667788" stroke-width="2" marker-end="url(#arrowB)"></path>
+          <path d="M490 161 L558 161" stroke="#667788" stroke-width="2" marker-end="url(#arrowB)"></path>
+          <path d="M748 161 L816 161" stroke="#667788" stroke-width="2" marker-end="url(#arrowB)"></path>
+          <path d="M395 196 L395 290" stroke="#667788" stroke-width="2" marker-end="url(#arrowB)"></path>
+          <path d="M490 325 L558 325" stroke="#667788" stroke-width="2" marker-end="url(#arrowB)"></path>
+          <path d="M653 290 C653 240 860 240 926 196" stroke="#667788" stroke-width="2" fill="none" marker-end="url(#arrowB)"></path>
+        </svg>
+      </div>
+
+      <div class="section">
+        <h2>5. 專案策略與工作分配</h2>
+        <div class="grid-3">
+          <div class="card green">
+            <h3>Phase 1：MVP</h3>
+            <ul>
+              <li>建立 Customers、Contacts、Opportunities、Sales Activities。</li>
+              <li>用 Power Apps 建立業務活動輸入。</li>
+              <li>產生週報案件明細與未更新清單。</li>
+            </ul>
+          </div>
+          <div class="card blue">
+            <h3>Phase 2：流程整合</h3>
+            <ul>
+              <li>加入 Coordination Items 與 Meeting Actions。</li>
+              <li>建立跨部門追蹤與晨會正式紀錄。</li>
+              <li>評估 Calendar 半自動比對。</li>
+            </ul>
+          </div>
+          <div class="card purple">
+            <h3>Phase 3：分析與升級</h3>
+            <ul>
+              <li>導入 Power BI。</li>
+              <li>評估 Dataverse。</li>
+              <li>評估 Dynamics 365 Sales。</li>
+            </ul>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>角色</th>
+              <th>責任</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>管理層 / 業務 Owner</td><td>定義商機規則、週報規則、系統邊界與導入優先順序。</td></tr>
+            <tr><td>業務行政管理</td><td>提供現況流程、檢查資料品質、追蹤缺漏與逾期、協助推行。</td></tr>
+            <tr><td>業務人員</td><td>填寫 Sales Activity、確認商機下一步、補週報主管摘要。</td></tr>
+            <tr><td>MIS / 資訊部門</td><td>設計資料結構、建置 Lists / Power Apps / Automate、權限與維護。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>6. 主管審查焦點與專案回應</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>主管可能關心</th>
+              <th>正式定義 / 回應</th>
+              <th>導入策略</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Coordination Items 是什麼？</td>
+              <td>由業務活動衍生出的跨部門協調事項，例如技術支援、交期協調、送樣追蹤、客訴以外的內部協作。它不是一般待辦清單，也不是 XMS 異常單。</td>
+              <td>Phase 1 先以 NeedCoordination 欄位標記；Sales Activity 穩定後，再於 Phase 1B / Phase 2 建立正式追蹤表。</td>
+            </tr>
+            <tr>
+              <td>Meeting Actions 是什麼？</td>
+              <td>晨會、主管會議或 LINE Concall 後形成的正式行動項目，記錄決議、負責人、期限、狀態與後續結果。它不是會議逐字稿。</td>
+              <td>Phase 2 建立。目的在於把口頭交辦轉成可查詢、可追蹤、可升級的管理資料。</td>
+            </tr>
+            <tr>
+              <td>Calendar 半自動是什麼？</td>
+              <td>不取代 Google Calendar，也不做雙向同步。半自動的意思是：CRM Lite 以 CalendarRef 或「是否已登錄活動」欄位對照行程與實際活動，提醒業務補登拜訪結果。</td>
+              <td>MVP 先人工標記；Phase 2 再評估由匯出檔或自動流程比對「有行程但無 Sales Activity」的清單。</td>
+            </tr>
+            <tr>
+              <td>MVP 成功後要完全搬過去嗎？</td>
+              <td>不應一次全面切換。MVP 是驗證資料模型、流程負擔與週報可用性，不是正式取代所有既有系統。</td>
+              <td>採「並行試跑 → 主管審查 → 分批切換」；鼎新與舊週報先保留查詢與備援角色。</td>
+            </tr>
+            <tr>
+              <td>途中遇到問題是否會進退兩難？</td>
+              <td>不會，前提是 MVP 不覆蓋來源資料、不搬全部歷史、不停用舊流程，並保留每日匯出快照。</td>
+              <td>設計退場機制：暫停新功能、保留舊週報、修正欄位規則、重新匯入清理後資料。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>7. 商業分析頁結論</h2>
+        <div class="decision">
+          <strong>建議結論：</strong>CRM Lite MVP 應以「業務活動資料化、週報明細自動化、商機下一步可追蹤」為明確範圍。若 MVP 證明可行，再逐步導入跨部門追蹤、BI、Dataverse 或 Dynamics 365 Sales。
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="data">
+      <div class="page-title">
+        <h1>第二頁｜MVP 資料結構與資料建置釐清</h1>
+        <p class="subtitle">本頁說明 MVP 實際要建哪些資料表、資料從哪裡來、如何清理匯入、各資料表的必要欄位與建置順序。目的是讓 MIS 可以開始拆解需求與估算製作工作。</p>
+        <div class="pill-row">
+          <span class="pill blue">Data Model</span>
+          <span class="pill green">MVP Build</span>
+          <span class="pill amber">Data Source</span>
+          <span class="pill cyan">Migration Ready</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>1. MVP 資料建置原則</h2>
+        <div class="grid-2">
+          <div class="card green">
+            <h3>要做</h3>
+            <ul>
+              <li>只建支援 MVP 流程的核心資料表。</li>
+              <li>只匯入進行中、近期、重大、需週報的案件。</li>
+              <li>所有資料保留穩定 ID 與來源系統 ID。</li>
+              <li>先讓週報與商機追蹤可用，再談完整 CRM。</li>
+            </ul>
+          </div>
+          <div class="card red">
+            <h3>不做</h3>
+            <ul>
+              <li>不搬全部鼎新歷史資料。</li>
+              <li>不把 Word 週報全文轉成資料庫。</li>
+              <li>不在 MVP 做完整報價、ERP 訂單、BI、GPS。</li>
+              <li>不在資料未清楚前做大量自動化。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>2. MVP 資料模型 ERD</h2>
+        <svg viewBox="0 0 1120 640" role="img" aria-label="MVP data model">
+          <defs>
+            <marker id="arrowD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#667788"></path>
+            </marker>
+          </defs>
+          <text x="34" y="42" class="svg-title">MVP 核心資料表關聯</text>
+          <text x="34" y="66" class="svg-subtitle">Customers、Contacts、Opportunities、Sales Activities 是主幹，Weekly 與 Coordination 由活動資料衍生。</text>
+
+          <rect x="70" y="120" width="220" height="92" class="box box-blue"></rect>
+          <text x="180" y="151" text-anchor="middle" class="svg-label">Customers</text>
+          <text x="180" y="176" text-anchor="middle" class="svg-small">客戶 / 集團 / 廠別</text>
+          <text x="180" y="195" text-anchor="middle" class="svg-tiny">ERPCode / OwnerSales</text>
+
+          <rect x="450" y="120" width="220" height="92" class="box box-green"></rect>
+          <text x="560" y="151" text-anchor="middle" class="svg-label">Contacts / Key Man</text>
+          <text x="560" y="176" text-anchor="middle" class="svg-small">聯絡人 / 角色 / 影響力</text>
+          <text x="560" y="195" text-anchor="middle" class="svg-tiny">CustomerID</text>
+
+          <rect x="830" y="120" width="220" height="92" class="box box-purple"></rect>
+          <text x="940" y="151" text-anchor="middle" class="svg-label">Opportunities</text>
+          <text x="940" y="176" text-anchor="middle" class="svg-small">商機 / 階段 / 下一步</text>
+          <text x="940" y="195" text-anchor="middle" class="svg-tiny">CustomerID / OwnerSales</text>
+
+          <rect x="450" y="300" width="220" height="104" class="box box-amber"></rect>
+          <text x="560" y="331" text-anchor="middle" class="svg-label">Sales Activities</text>
+          <text x="560" y="356" text-anchor="middle" class="svg-small">活動結果 / Call Report</text>
+          <text x="560" y="375" text-anchor="middle" class="svg-tiny">CustomerID / ContactID / OpportunityID</text>
+
+          <rect x="155" y="482" width="220" height="92" class="box box-cyan"></rect>
+          <text x="265" y="513" text-anchor="middle" class="svg-label">Coordination Items</text>
+          <text x="265" y="538" text-anchor="middle" class="svg-small">跨部門需求 / 期限</text>
+          <text x="265" y="557" text-anchor="middle" class="svg-tiny">SourceActivityID</text>
+
+          <rect x="745" y="482" width="220" height="92" class="box box-red"></rect>
+          <text x="855" y="513" text-anchor="middle" class="svg-label">Weekly Highlights</text>
+          <text x="855" y="538" text-anchor="middle" class="svg-small">主管摘要 / 待決策</text>
+          <text x="855" y="557" text-anchor="middle" class="svg-tiny">Week / OwnerSales</text>
+
+          <path d="M290 166 L450 166" stroke="#667788" stroke-width="2" marker-end="url(#arrowD)"></path>
+          <path d="M670 166 L830 166" stroke="#667788" stroke-width="2" marker-end="url(#arrowD)"></path>
+          <path d="M560 212 L560 300" stroke="#667788" stroke-width="2" marker-end="url(#arrowD)"></path>
+          <path d="M940 212 C940 260 670 260 670 340" stroke="#667788" stroke-width="2" fill="none" marker-end="url(#arrowD)"></path>
+          <path d="M450 364 C350 410 265 430 265 482" stroke="#667788" stroke-width="2" fill="none" marker-end="url(#arrowD)"></path>
+          <path d="M670 364 C760 410 855 430 855 482" stroke="#667788" stroke-width="2" fill="none" marker-end="url(#arrowD)"></path>
+        </svg>
+      </div>
+
+      <div class="section">
+        <h2>3. 資料表欄位定義</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>資料表</th>
+              <th>必要欄位</th>
+              <th>建議選項 / 規則</th>
+              <th>MVP 建置重點</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Customers</td>
+              <td>CustomerID、CustomerName、GroupName、SiteName、ERPCode、OwnerSales、Status</td>
+              <td>Status：Active / Inactive；OwnerSales 使用 M365 人員欄位</td>
+              <td>客戶與廠別要分清楚，避免同一客戶多個名稱。</td>
+            </tr>
+            <tr>
+              <td>Contacts / Key Man</td>
+              <td>ContactID、CustomerID、Name、Department、Title、RoleType、InfluenceLevel、RelationshipStatus、IsExternalPerson</td>
+              <td>RoleType：採購 / 技術 / 決策 / 使用者 / 外部影響者</td>
+              <td>外部人可記錄，但需標示是否屬於客戶公司內部。</td>
+            </tr>
+            <tr>
+              <td>Opportunities</td>
+              <td>OpportunityID、CustomerID、Name、Stage、EstimatedAmount、ExpectedCloseDate、NextAction、NextActionDueDate、OwnerSales、Status</td>
+              <td>Stage 先簡化：Lead / Qualified / Quotation / Sample-Trial / Negotiation / Won / Lost / On Hold</td>
+              <td>MVP 不做複雜 forecast，只要求階段與下一步清楚。</td>
+            </tr>
+            <tr>
+              <td>Sales Activities</td>
+              <td>ActivityID、ActivityDate、OwnerSales、CustomerID、ContactID、OpportunityID、ActivityType、Summary、Result、NextAction、DueDate、NeedCoordination、IncludeInWeeklyReport、CalendarRef</td>
+              <td>ActivityType：拜訪 / 電話 / 視訊 / Email / 報價 / 送樣 / 技術討論 / 內部協調</td>
+              <td>主輸入表。拜訪與正式會議才展開 Call Report 詳細欄位。</td>
+            </tr>
+            <tr>
+              <td>Weekly Highlights</td>
+              <td>Week、OwnerSales、MajorProgress、MajorRisk、NextWeekFocus、DecisionNeeded、CrossDeptBlocker</td>
+              <td>每位業務每週一筆摘要</td>
+              <td>案件明細由系統帶出，摘要由業務補判斷。</td>
+            </tr>
+            <tr>
+              <td>Coordination Items</td>
+              <td>CoordinationID、SourceActivityID、OpportunityID、RequestContent、SupportDept、Owner、DueDate、Status、Result</td>
+              <td>Status：Open / In Progress / Waiting / Done / Escalated</td>
+              <td>若 MVP 先不做，可保留欄位 NeedCoordination 供 Phase 1B 建立。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>4. 資料來源與搬遷範圍</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>來源</th>
+              <th>取用資料</th>
+              <th>搬遷方式</th>
+              <th>不搬內容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>鼎新 CRM</td>
+              <td>客戶、聯絡人、進行中商機、近期重要活動</td>
+              <td>Excel 匯出 → 清理 → 對應欄位 → 匯入 Lists</td>
+              <td>多年歷史活動、已結案且不再管理的商機</td>
+            </tr>
+            <tr>
+              <td>Word 週報</td>
+              <td>仍被追蹤的案件、主管關注事項、週報摘要格式</td>
+              <td>人工整理成 Opportunities 與 Weekly Highlights 初始資料</td>
+              <td>完整週報文字歷史</td>
+            </tr>
+            <tr>
+              <td>Google Calendar</td>
+              <td>預定行程參照</td>
+              <td>MVP 不做 API 匯入，只在 Sales Activity 增加 CalendarRef / 是否已登錄欄位</td>
+              <td>全量行事曆歷史</td>
+            </tr>
+            <tr>
+              <td>XMS</td>
+              <td>客戶需求跨部門協調、安裝協調</td>
+              <td>視主管決策移入 Coordination Items 或保留連結</td>
+              <td>異常提報，應交 COM</td>
+            </tr>
+            <tr>
+              <td>業務補充</td>
+              <td>Key Man、商機下一步、缺漏聯絡人、案件狀態</td>
+              <td>試跑前由業務確認與補齊</td>
+              <td>無法確認真實性的個人記憶資料</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>5. MVP 資料建置流程</h2>
+        <svg viewBox="0 0 1120 500" role="img" aria-label="MVP data build process">
+          <defs>
+            <marker id="arrowM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#667788"></path>
+            </marker>
+          </defs>
+          <text x="34" y="42" class="svg-title">資料建置順序</text>
+          <text x="34" y="66" class="svg-subtitle">不要先做空白 App；先把資料來源、清理規則與初始匯入定義好。</text>
+
+          <rect x="52" y="134" width="160" height="70" class="box box-amber"></rect>
+          <text x="132" y="164" text-anchor="middle" class="svg-label">1. 盤點</text>
+          <text x="132" y="186" text-anchor="middle" class="svg-small">確認來源資料</text>
+
+          <rect x="252" y="134" width="160" height="70" class="box box-blue"></rect>
+          <text x="332" y="164" text-anchor="middle" class="svg-label">2. 篩選</text>
+          <text x="332" y="186" text-anchor="middle" class="svg-small">只取 MVP 範圍</text>
+
+          <rect x="452" y="134" width="160" height="70" class="box box-green"></rect>
+          <text x="532" y="164" text-anchor="middle" class="svg-label">3. 清理</text>
+          <text x="532" y="186" text-anchor="middle" class="svg-small">去重 / 對應</text>
+
+          <rect x="652" y="134" width="160" height="70" class="box box-cyan"></rect>
+          <text x="732" y="164" text-anchor="middle" class="svg-label">4. 匯入</text>
+          <text x="732" y="186" text-anchor="middle" class="svg-small">Lists 初始資料</text>
+
+          <rect x="852" y="134" width="190" height="70" class="box box-purple"></rect>
+          <text x="947" y="164" text-anchor="middle" class="svg-label">5. 業務確認</text>
+          <text x="947" y="186" text-anchor="middle" class="svg-small">補下一步 / 負責人</text>
+
+          <rect x="452" y="300" width="220" height="76" class="box box-red"></rect>
+          <text x="562" y="332" text-anchor="middle" class="svg-label">6. 試跑週報</text>
+          <text x="562" y="354" text-anchor="middle" class="svg-small">檢查明細是否可用</text>
+
+          <path d="M212 169 L252 169" stroke="#667788" stroke-width="2" marker-end="url(#arrowM)"></path>
+          <path d="M412 169 L452 169" stroke="#667788" stroke-width="2" marker-end="url(#arrowM)"></path>
+          <path d="M612 169 L652 169" stroke="#667788" stroke-width="2" marker-end="url(#arrowM)"></path>
+          <path d="M812 169 L852 169" stroke="#667788" stroke-width="2" marker-end="url(#arrowM)"></path>
+          <path d="M947 204 C947 270 562 270 562 300" stroke="#667788" stroke-width="2" fill="none" marker-end="url(#arrowM)"></path>
+        </svg>
+        <div class="decision">
+          <strong>建置原則：</strong>MVP 不直接覆蓋鼎新、Word 週報或 Google Calendar。初期採並行試跑，CRM Lite 先承擔新活動輸入與週報明細產生；既有資料保留來源系統 ID，必要時可重新整理後再匯入。
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>6. 備份、匯出與歷史資料保全</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>機制</th>
+              <th>作法</th>
+              <th>目的</th>
+              <th>注意事項</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SharePoint 版本與回收機制</td>
+              <td>啟用清單版本紀錄、保留建立者/修改者/修改時間，誤刪時由回收機制復原。</td>
+              <td>處理短期誤改、誤刪與欄位值回復。</td>
+              <td>這是復原機制，不等同於營運歷史快照。</td>
+            </tr>
+            <tr>
+              <td>每日資料快照</td>
+              <td>以 Power Automate 每日固定時間匯出核心清單為 Excel / CSV，存放於 SharePoint 文件庫的日期資料夾。</td>
+              <td>保留每日歷史狀態，避免流程調整或資料清理造成無法回溯。</td>
+              <td>匯出欄位需包含系統 ID、來源系統 ID、建立/修改時間與狀態。</td>
+            </tr>
+            <tr>
+              <td>異動前封存</td>
+              <td>欄位調整、批次匯入、批次清理前，先產生手動封存檔。</td>
+              <td>確保資料模型修改時有回復點。</td>
+              <td>由 MIS 執行並記錄調整原因。</td>
+            </tr>
+            <tr>
+              <td>定期管理匯出</td>
+              <td>每週產出主管可讀的 Opportunities、Sales Activities、逾期事項與週報摘要匯出檔。</td>
+              <td>即使 App 暫時調整，管理層仍可取得關鍵資料。</td>
+              <td>此匯出是管理檢視，不取代每日資料快照。</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="decision">
+          <strong>備份定位：</strong>CRM Lite MVP 的備份策略不是資料庫等級災難復原，而是「每日營運資料快照 + SharePoint 版本復原 + 異動前封存」。此設計足以支援 MVP 階段的回溯、修正與退場。
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>7. MVP 可行性評估</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>面向</th>
+              <th>判斷</th>
+              <th>原因</th>
+              <th>風險控制</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>技術</td><td>可行性高</td><td>Lists、Power Apps、Automate 足以支援 MVP。</td><td>不做複雜 BI、GPS、ERP 串接。</td></tr>
+            <tr><td>資料</td><td>可行性中</td><td>已有鼎新與週報資料，但需清理與篩選。</td><td>只搬進行中、近期、重大案件。</td></tr>
+            <tr><td>流程</td><td>可行性中</td><td>流程方向清楚，但商機階段與週報規則需主管確認。</td><td>開發前先確認最小管理規則。</td></tr>
+            <tr><td>使用</td><td>可行性中</td><td>若能減少週報負擔，業務有採用誘因。</td><td>表單欄位需克制，舊週報需逐步退場。</td></tr>
+            <tr><td>維護</td><td>可行性中高</td><td>MVP 架構可由 MIS 維護。</td><td>自動化流程與例外規則不能過度堆疊。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>8. 資料頁待確認事項</h2>
+        <div class="grid-2">
+          <div class="card amber">
+            <h3>導入範圍</h3>
+            <ol>
+              <li>MVP 先試哪一個業務單位、哪一批客戶或哪一類商機？</li>
+              <li>舊週報、鼎新 CRM 與 CRM Lite 預計並行多久？</li>
+              <li>主管要在什麼情況下同意擴大導入，而不是立即全公司切換？</li>
+            </ol>
+          </div>
+          <div class="card blue">
+            <h3>資料來源</h3>
+            <ol>
+              <li>鼎新 CRM 可匯出哪些欄位？是否有穩定的客戶、聯絡人、商機與活動 ID？</li>
+              <li>Word 週報中仍需要追蹤的案件由誰判定？</li>
+              <li>Google Calendar 在 MVP 階段只作參照，是否可接受不做自動同步？</li>
+            </ol>
+          </div>
+          <div class="card green">
+            <h3>資料治理</h3>
+            <ol>
+              <li>初始資料清理由 MIS 處理到哪個程度，業務需確認哪些內容？</li>
+              <li>客戶、Key Man、商機階段與下一步由誰擁有最終維護責任？</li>
+              <li>每日匯出檔保留多久？誰可以存取？誰負責定期檢查匯出是否成功？</li>
+            </ol>
+          </div>
+          <div class="card red">
+            <h3>系統邊界</h3>
+            <ol>
+              <li>Coordination Items 是否在 Phase 1B 建立，還是等 Phase 2？</li>
+              <li>Meeting Actions 是否只收正式決議，不收一般會議紀錄？</li>
+              <li>是否同意 MVP 不把 COM、ERP、完整報價與全部歷史活動納入資料模型？</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
